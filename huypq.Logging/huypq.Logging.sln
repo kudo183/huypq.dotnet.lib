@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26430.15
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "huypq.Logging", "huypq.Logging\huypq.Logging.csproj", "{EB2AFC9D-0BD2-4DA6-B386-EB7F4D8B546F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "huypq.Logging", "huypq.Logging\huypq.Logging.csproj", "{EB2AFC9D-0BD2-4DA6-B386-EB7F4D8B546F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogViewer", "LogViewer\LogViewer.csproj", "{A8B31DA2-0FA6-4C8B-8203-EE27FD5E4CA0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{EB2AFC9D-0BD2-4DA6-B386-EB7F4D8B546F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EB2AFC9D-0BD2-4DA6-B386-EB7F4D8B546F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EB2AFC9D-0BD2-4DA6-B386-EB7F4D8B546F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A8B31DA2-0FA6-4C8B-8203-EE27FD5E4CA0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A8B31DA2-0FA6-4C8B-8203-EE27FD5E4CA0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A8B31DA2-0FA6-4C8B-8203-EE27FD5E4CA0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A8B31DA2-0FA6-4C8B-8203-EE27FD5E4CA0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
