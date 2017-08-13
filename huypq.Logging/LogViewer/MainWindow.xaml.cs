@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.Win32;
+using Newtonsoft.Json;
 using System;
 using System.Collections.ObjectModel;
 using System.Net;
@@ -82,6 +83,35 @@ namespace LogViewer
                 listBoxItemSource.RemoveAt(0);
             }
             scrollViewer.ScrollToBottom();
+        }
+
+        OpenFileDialog ofd = new OpenFileDialog();
+
+        private async void Load_Click(object sender, RoutedEventArgs e)
+        {
+            server.Stop();
+
+            if (ofd.ShowDialog() == true)
+            {
+                using (var sr = System.IO.File.OpenText(ofd.FileName))
+                {
+                    var sb = new StringBuilder();
+                    while (sr.EndOfStream == false)
+                    {
+                        var text = await sr.ReadLineAsync();
+                        sb.Append(text);
+                        while (text.EndsWith("}") == false)
+                        {
+                            text = await sr.ReadLineAsync();
+                            sb.Append(text);
+                        }
+
+                        listBoxItemSource.Add(JsonConvert.DeserializeObject<LogMessage>(sb.ToString()));
+                        sb.Clear();
+                    }
+                    scrollViewer.ScrollToBottom();
+                }
+            }
         }
     }
 }

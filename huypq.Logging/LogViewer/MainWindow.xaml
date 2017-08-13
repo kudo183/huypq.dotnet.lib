@@ -15,6 +15,7 @@
             <Button Content="Start" Click="Start_Click" Margin="5" Width="100" x:Name="btnStart" IsEnabled="True"/>
             <Button Content="Stop" Click="Stop_Click" Margin="5" Width="100" x:Name="btnStop" IsEnabled="False"/>
             <Button Content="Clear" Click="Clear_Click" Margin="5" Width="100" x:Name="btnClear"/>
+            <Button Content="Load" Click="Load_Click" Margin="5" Width="100" x:Name="btnLoad"/>
         </StackPanel>
         <DataGrid Grid.Row="1" ItemsSource="{Binding}" x:Name="listBox" AutoGenerateColumns="True"/>
     </Grid>

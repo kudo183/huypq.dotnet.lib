@@ -39,7 +39,11 @@ namespace LogViewer
 
         public void Stop()
         {
-            udpClient.Close();
+            if (udpClient != null)
+            {
+                udpClient.Close();
+                udpClient = null;
+            }
             _isRunning = false;
         }
     }
