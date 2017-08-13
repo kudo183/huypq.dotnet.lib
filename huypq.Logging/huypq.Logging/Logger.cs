@@ -1,5 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using System;
+using System.IO;
 using System.Text;
 
 namespace Server.Logger
@@ -54,49 +56,40 @@ namespace Server.Logger
             }
         }
 
-        private const string Tab = "\t";
-
         private void WriteJsonMessage(LogLevel logLevel, string logName, int eventId, string message, Exception exception)
         {
-            var logBuilder = new StringBuilder();
+            var sw = new StringWriter();
+            var jtw = new JsonTextWriter(sw);
 
-            var logLevelString = string.Empty;
-            
-            logBuilder.Append("{");
-            logBuilder.Append("\"t\":\"");
-            logBuilder.Append(DateTime.UtcNow.ToString("yyyy-MM-ddThh:mm:ss.fffZ"));
-            logLevelString = GetLogLevelString(logLevel);
-            logBuilder.Append("\",\"a\":\"");
-            logBuilder.Append(logLevelString);
-            logBuilder.Append("\",\"b\":\"");
-            logBuilder.Append(logName);
-            logBuilder.Append("\",\"c\":\"");
-            logBuilder.Append(eventId);
-            
+            jtw.WriteStartObject();
+            jtw.WritePropertyName("t");
+            jtw.WriteValue(DateTime.UtcNow.ToString("yyyy-MM-ddThh:mm:ss.fffZ"));
+            jtw.WritePropertyName("a");
+            jtw.WriteValue(GetLogLevelString(logLevel));
+            jtw.WritePropertyName("b");
+            jtw.WriteValue(logName);
+            jtw.WritePropertyName("c");
+            jtw.WriteValue(eventId);
             if (_isIncludeScope)
             {
-                logBuilder.Append("\",\"d\":\"");
-                logBuilder.Append(GetScopeInformation());
+                jtw.WritePropertyName("d");
+                jtw.WriteValue(GetScopeInformation());
             }
-
             if (string.IsNullOrEmpty(message) == false)
             {
-                logBuilder.Append("\",\"e\":\"");
-                logBuilder.Append(message);
+                jtw.WritePropertyName("e");
+                jtw.WriteValue(message);
             }
-            
             if (exception != null)
             {
-                logBuilder.Append("\",\"f\":\"");
-                logBuilder.Append(exception.ToString());
+                jtw.WritePropertyName("f");
+                jtw.WriteValue(exception.ToString());
             }
-            logBuilder.Append("\"}");
-            logBuilder.AppendLine();
-
-            // Queue log message
-            _messageQueue.EnqueueMessage(logBuilder.ToString());
+            jtw.WriteEndObject();
+            sw.WriteLine();
+            _messageQueue.EnqueueMessage(sw.ToString());
         }
-        
+
         private string GetScopeInformation()
         {
             var current = LogScope.Current;
