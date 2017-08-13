@@ -58,36 +58,37 @@ namespace Server.Logger
 
         private void WriteJsonMessage(LogLevel logLevel, string logName, int eventId, string message, Exception exception)
         {
-            var sw = new StringWriter();
-            var jtw = new JsonTextWriter(sw);
-
-            jtw.WriteStartObject();
-            jtw.WritePropertyName("t");
-            jtw.WriteValue(DateTime.UtcNow.ToString("yyyy-MM-ddThh:mm:ss.fffZ"));
-            jtw.WritePropertyName("a");
-            jtw.WriteValue(GetLogLevelString(logLevel));
-            jtw.WritePropertyName("b");
-            jtw.WriteValue(logName);
-            jtw.WritePropertyName("c");
-            jtw.WriteValue(eventId);
-            if (_isIncludeScope)
+            using (var sw = new StringWriter())
+            using (var jtw = new JsonTextWriter(sw))
             {
-                jtw.WritePropertyName("d");
-                jtw.WriteValue(GetScopeInformation());
+                jtw.WriteStartObject();
+                jtw.WritePropertyName("t");
+                jtw.WriteValue(DateTime.UtcNow.ToString("yyyy-MM-ddThh:mm:ss.fffZ"));
+                jtw.WritePropertyName("a");
+                jtw.WriteValue(GetLogLevelString(logLevel));
+                jtw.WritePropertyName("b");
+                jtw.WriteValue(logName);
+                jtw.WritePropertyName("c");
+                jtw.WriteValue(eventId);
+                if (_isIncludeScope)
+                {
+                    jtw.WritePropertyName("d");
+                    jtw.WriteValue(GetScopeInformation());
+                }
+                if (string.IsNullOrEmpty(message) == false)
+                {
+                    jtw.WritePropertyName("e");
+                    jtw.WriteValue(message);
+                }
+                if (exception != null)
+                {
+                    jtw.WritePropertyName("f");
+                    jtw.WriteValue(exception.ToString());
+                }
+                jtw.WriteEndObject();
+                sw.WriteLine();
+                _messageQueue.EnqueueMessage(sw.ToString());
             }
-            if (string.IsNullOrEmpty(message) == false)
-            {
-                jtw.WritePropertyName("e");
-                jtw.WriteValue(message);
-            }
-            if (exception != null)
-            {
-                jtw.WritePropertyName("f");
-                jtw.WriteValue(exception.ToString());
-            }
-            jtw.WriteEndObject();
-            sw.WriteLine();
-            _messageQueue.EnqueueMessage(sw.ToString());
         }
 
         private string GetScopeInformation()
