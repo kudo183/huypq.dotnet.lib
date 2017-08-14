@@ -2,19 +2,20 @@
 using System;
 using System.Collections.Concurrent;
 
-namespace Server.Logger
+namespace huypq.Logging
 {
     public class LoggerProvider : ILoggerProvider
     {
         private readonly ConcurrentDictionary<string, Logger> _loggers = new ConcurrentDictionary<string, Logger>();
         private readonly Func<string, LogLevel, bool> _filter;
         private readonly bool _isIncludeScope;
-        private readonly LoggerProcessor _messageQueue = new LoggerProcessor();
+        private readonly ILoggerProcessor _messageQueue;
 
-        public LoggerProvider(Func<string, LogLevel, bool> filter, bool isIncludeScope)
+        public LoggerProvider(Func<string, LogLevel, bool> filter, bool isIncludeScope, ILoggerProcessor processor)
         {
             _filter = filter;
             _isIncludeScope = isIncludeScope;
+            _messageQueue = processor ?? throw new ArgumentNullException(nameof(processor));
         }
 
         public ILogger CreateLogger(string name)

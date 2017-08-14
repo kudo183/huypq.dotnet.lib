@@ -4,16 +4,16 @@ using System;
 using System.IO;
 using System.Text;
 
-namespace Server.Logger
+namespace huypq.Logging
 {
     public class Logger : ILogger
     {
         private readonly Func<string, LogLevel, bool> _filter;
-        private readonly LoggerProcessor _messageQueue;
+        private readonly ILoggerProcessor _messageQueue;
         private readonly string _name;
         private readonly bool _isIncludeScope;
 
-        public Logger(string name, Func<string, LogLevel, bool> filter, bool isIncludeScope, LoggerProcessor messageQueue)
+        public Logger(string name, Func<string, LogLevel, bool> filter, bool isIncludeScope, ILoggerProcessor messageQueue)
         {
             _name = name;
             _filter = filter;

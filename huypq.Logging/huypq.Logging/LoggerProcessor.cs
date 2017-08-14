@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Threading.Tasks;
 using System.Collections.Concurrent;
-namespace Server.Logger
+
+namespace huypq.Logging
 {
-    public class LoggerProcessor : IDisposable
+    public class LoggerProcessor : ILoggerProcessor
     {
         private const int _maxQueuedMessages = 1024;
 

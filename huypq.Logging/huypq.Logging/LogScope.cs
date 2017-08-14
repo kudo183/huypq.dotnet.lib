@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading;
 
-namespace Server.Logger
+namespace huypq.Logging
 {
     public class LogScope
     {
