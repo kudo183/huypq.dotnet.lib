@@ -46,6 +46,7 @@
     <Compile Include="BindableObject.cs" />
     <Compile Include="BindingUtils.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ServiceLocator.cs" />
     <Compile Include="SimpleCommand.cs" />
     <Compile Include="VisualTreeUtils.cs" />
   </ItemGroup>
