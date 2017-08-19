@@ -3,7 +3,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d"
+        xmlns:simpleDataGrid="clr-namespace:SimpleDataGrid;assembly=SimpleDataGrid"
+        mc:Ignorable="d"        
         Title="MainWindow"
         WindowState="Maximized">
     <Grid>
@@ -17,6 +18,16 @@
             <Button Content="Clear" Click="Clear_Click" Margin="5" Width="100" x:Name="btnClear"/>
             <Button Content="Load" Click="Load_Click" Margin="5" Width="100" x:Name="btnLoad"/>
         </StackPanel>
-        <DataGrid Grid.Row="1" ItemsSource="{Binding}" x:Name="listBox" AutoGenerateColumns="True"/>
+        <simpleDataGrid:EditableGridView x:Name="gridView" Grid.Row="1">
+            <simpleDataGrid:EditableGridView.Columns>
+                <simpleDataGrid:DataGridTextColumnExt Width="Auto" Header="T" Binding="{Binding T}"/>
+                <simpleDataGrid:DataGridTextColumnExt Width="Auto" Header="A" Binding="{Binding A}"/>
+                <simpleDataGrid:DataGridTextColumnExt Width="250" Header="B" Binding="{Binding B}"/>
+                <simpleDataGrid:DataGridTextColumnExt Width="Auto" Header="C" Binding="{Binding C}"/>
+                <simpleDataGrid:DataGridTextColumnExt Width="300" Header="D" Binding="{Binding D}"/>
+                <simpleDataGrid:DataGridTextColumnExt Width="*" Header="E" Binding="{Binding E}"/>
+                <simpleDataGrid:DataGridTextColumnExt Width="Auto" Header="F" Binding="{Binding F}"/>
+            </simpleDataGrid:EditableGridView.Columns>
+        </simpleDataGrid:EditableGridView>
     </Grid>
 </Window>

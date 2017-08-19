@@ -57,6 +57,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="DataManager.cs" />
+    <Compile Include="MainWindowViewModel.cs" />
     <Compile Include="StateObject.cs" />
     <Compile Include="TcpServer.cs" />
     <Compile Include="UdpServer.cs" />
@@ -101,6 +103,20 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\huypq.SimpleDataGrid\SimpleDataGrid\SimpleDataGrid.csproj">
+      <Project>{9cfa4fe9-01d0-4bd1-aa8a-bca4b4a60375}</Project>
+      <Name>SimpleDataGrid</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\huypq.QueryBuilder\huypq.QueryBuilder.Framework\huypq.QueryBuilder.Framework.csproj">
+      <Project>{c3b36888-e0f1-4e30-8549-50d20dd636c5}</Project>
+      <Name>huypq.QueryBuilder.Framework</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\huypq.wpf.Utils\huypq.wpf.Utils\huypq.wpf.Utils.csproj">
+      <Project>{b3180065-6e2e-4ec4-9d02-e8d43d93808a}</Project>
+      <Name>huypq.wpf.Utils</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

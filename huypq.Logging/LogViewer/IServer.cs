@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace LogViewer
 {
-    interface IServer
+    public interface IServer
     {
         bool IsRunning { get; }
         Action<string> ReadCompleted { get; set; }
