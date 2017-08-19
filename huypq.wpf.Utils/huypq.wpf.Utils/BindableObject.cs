@@ -62,14 +62,16 @@ namespace huypq.wpf.Utils
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        protected void SetField<T>(ref T field, T value, [CallerMemberName] string propertyName = null)
+        protected bool SetField<T>(ref T field, T value, [CallerMemberName] string propertyName = null)
         {
             if (EqualityComparer<T>.Default.Equals(field, value) == true)
             {
-                return;
+                return false;
             }
 
             SetFieldWithoutCheckEqual(ref field, value, propertyName);
+
+            return true;
         }
 
         protected void SetFieldWithoutCheckEqual<T>(ref T field, T value, [CallerMemberName] string propertyName = null)
