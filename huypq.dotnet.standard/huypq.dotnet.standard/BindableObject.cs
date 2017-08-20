@@ -55,11 +55,24 @@ namespace huypq.dotnet.standard
         #endregion
 
         #region INotifyPropertyChanged
+        Dictionary<string, List<string>> _dependentPropertiesDic = new Dictionary<string, List<string>>();
+        protected void SetDependentProperty(string propertyName, List<string> dependentProperties)
+        {
+            _dependentPropertiesDic[propertyName] = dependentProperties;
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected virtual void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            if (_dependentPropertiesDic.TryGetValue(propertyName, out List<string> dependentProperties) == true)
+            {
+                foreach (var p in dependentProperties)
+                {
+                    OnPropertyChanged(p);
+                }
+            }
         }
 
         protected bool SetField<T>(ref T field, T value, [CallerMemberName] string propertyName = null)

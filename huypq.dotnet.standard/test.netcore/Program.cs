@@ -28,7 +28,7 @@ namespace test.netcore
 
         private static void T_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            Console.WriteLine("T_PropertyChanged");
+            Console.WriteLine("T_PropertyChanged: " + e.PropertyName);
         }
     }
 }
