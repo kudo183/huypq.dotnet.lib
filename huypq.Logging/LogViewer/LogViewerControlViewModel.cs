@@ -1,14 +1,9 @@
 ﻿using huypq.QueryBuilder;
 using SimpleDataGrid.ViewModel;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace LogViewer
 {
-    class MainWindowViewModel : EditableGridViewModel<LogMessage>
+    class LogViewerControlViewModel : EditableGridViewModel<LogMessage>
     {
         DataManager _dataManager;
 
@@ -20,7 +15,7 @@ namespace LogViewer
         HeaderFilterBaseModel _eFilter;
         HeaderFilterBaseModel _fFilter;
 
-        public MainWindowViewModel(DataManager dataManager)
+        public LogViewerControlViewModel(DataManager dataManager)
         {
             _dataManager = dataManager;
 

@@ -58,10 +58,17 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="DataManager.cs" />
-    <Compile Include="MainWindowViewModel.cs" />
+    <Compile Include="LogViewerControl.xaml.cs">
+      <DependentUpon>LogViewerControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="LogViewerControlViewModel.cs" />
     <Compile Include="StateObject.cs" />
     <Compile Include="TcpServer.cs" />
     <Compile Include="UdpServer.cs" />
+    <Page Include="LogViewerControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
