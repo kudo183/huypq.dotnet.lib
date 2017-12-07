@@ -1,19 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26430.15
+VisualStudioVersion = 15.0.27004.2005
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "huypq.Logging", "huypq.Logging\huypq.Logging.csproj", "{EB2AFC9D-0BD2-4DA6-B386-EB7F4D8B546F}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogViewer", "LogViewer\LogViewer.csproj", "{A8B31DA2-0FA6-4C8B-8203-EE27FD5E4CA0}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleDataGrid", "..\..\huypq.SimpleDataGrid\SimpleDataGrid\SimpleDataGrid.csproj", "{9CFA4FE9-01D0-4BD1-AA8A-BCA4B4A60375}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "lib", "lib", "{E0B27349-EF09-461D-8724-03BB0B5EB33A}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "huypq.wpf.Utils", "..\huypq.wpf.Utils\huypq.wpf.Utils\huypq.wpf.Utils.csproj", "{B3180065-6E2E-4EC4-9D02-E8D43D93808A}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "huypq.QueryBuilder.Framework", "..\huypq.QueryBuilder\huypq.QueryBuilder.Framework\huypq.QueryBuilder.Framework.csproj", "{C3B36888-E0F1-4E30-8549-50D20DD636C5}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "huypq.Logging.Framework", "huypq.Logging.Framework\huypq.Logging.Framework.csproj", "{F4ABC0F4-C860-44A4-8BF7-58BE106E17E4}"
 EndProject
@@ -27,22 +17,6 @@ Global
 		{EB2AFC9D-0BD2-4DA6-B386-EB7F4D8B546F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EB2AFC9D-0BD2-4DA6-B386-EB7F4D8B546F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EB2AFC9D-0BD2-4DA6-B386-EB7F4D8B546F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A8B31DA2-0FA6-4C8B-8203-EE27FD5E4CA0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A8B31DA2-0FA6-4C8B-8203-EE27FD5E4CA0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A8B31DA2-0FA6-4C8B-8203-EE27FD5E4CA0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A8B31DA2-0FA6-4C8B-8203-EE27FD5E4CA0}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9CFA4FE9-01D0-4BD1-AA8A-BCA4B4A60375}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9CFA4FE9-01D0-4BD1-AA8A-BCA4B4A60375}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9CFA4FE9-01D0-4BD1-AA8A-BCA4B4A60375}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9CFA4FE9-01D0-4BD1-AA8A-BCA4B4A60375}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B3180065-6E2E-4EC4-9D02-E8D43D93808A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B3180065-6E2E-4EC4-9D02-E8D43D93808A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B3180065-6E2E-4EC4-9D02-E8D43D93808A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B3180065-6E2E-4EC4-9D02-E8D43D93808A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C3B36888-E0F1-4E30-8549-50D20DD636C5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C3B36888-E0F1-4E30-8549-50D20DD636C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C3B36888-E0F1-4E30-8549-50D20DD636C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C3B36888-E0F1-4E30-8549-50D20DD636C5}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F4ABC0F4-C860-44A4-8BF7-58BE106E17E4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F4ABC0F4-C860-44A4-8BF7-58BE106E17E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F4ABC0F4-C860-44A4-8BF7-58BE106E17E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -51,9 +25,7 @@ Global
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{9CFA4FE9-01D0-4BD1-AA8A-BCA4B4A60375} = {E0B27349-EF09-461D-8724-03BB0B5EB33A}
-		{B3180065-6E2E-4EC4-9D02-E8D43D93808A} = {E0B27349-EF09-461D-8724-03BB0B5EB33A}
-		{C3B36888-E0F1-4E30-8549-50D20DD636C5} = {E0B27349-EF09-461D-8724-03BB0B5EB33A}
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E6506930-7BC3-446F-BB0B-E35E415150A8}
 	EndGlobalSection
 EndGlobal
