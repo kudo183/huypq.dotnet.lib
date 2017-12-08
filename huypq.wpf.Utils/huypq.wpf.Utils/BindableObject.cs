@@ -61,6 +61,8 @@ namespace huypq.wpf.Utils
             _dependentPropertiesDic[propertyName] = dependentProperties;
         }
 
+        protected virtual void SetPropertiesDependency() { }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected virtual void OnPropertyChanged(string propertyName)
