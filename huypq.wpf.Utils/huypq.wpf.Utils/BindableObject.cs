@@ -8,6 +8,11 @@ namespace huypq.wpf.Utils
 {
     public class BindableObject : INotifyPropertyChanged, INotifyDataErrorInfo
     {
+        public BindableObject()
+        {
+            SetPropertiesDependency();
+        }
+
         #region INotifyDataErrorInfo
         public bool HasErrors
         {
