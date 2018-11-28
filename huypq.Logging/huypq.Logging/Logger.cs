@@ -63,7 +63,7 @@ namespace huypq.Logging
             {
                 jtw.WriteStartObject();
                 jtw.WritePropertyName("time");
-                jtw.WriteValue(DateTime.UtcNow.ToString("yyyy-MM-ddThh:mm:ss.fffZ"));
+                jtw.WriteValue(DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ss.fffZ"));
                 jtw.WritePropertyName("level");
                 jtw.WriteValue(GetLogLevelString(logLevel));
                 jtw.WritePropertyName("cat");
