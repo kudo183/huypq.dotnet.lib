@@ -44,8 +44,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\huypq.Logging\ElasticsearchBatchWriter.cs">
+      <Link>ElasticsearchBatchWriter.cs</Link>
+    </Compile>
+    <Compile Include="..\huypq.Logging\FileBatchWriter.cs">
+      <Link>FileBatchWriter.cs</Link>
+    </Compile>
+    <Compile Include="..\huypq.Logging\ILogBatchWriter.cs">
+      <Link>ILogBatchWriter.cs</Link>
+    </Compile>
     <Compile Include="..\huypq.Logging\ILoggerProcessor.cs">
       <Link>ILoggerProcessor.cs</Link>
+    </Compile>
+    <Compile Include="..\huypq.Logging\ILogWriter.cs">
+      <Link>ILogWriter.cs</Link>
     </Compile>
     <Compile Include="..\huypq.Logging\Logger.cs">
       <Link>Logger.cs</Link>
