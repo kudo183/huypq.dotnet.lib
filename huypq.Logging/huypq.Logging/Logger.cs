@@ -62,27 +62,27 @@ namespace huypq.Logging
             using (var jtw = new JsonTextWriter(sw))
             {
                 jtw.WriteStartObject();
-                jtw.WritePropertyName("t");
+                jtw.WritePropertyName("time");
                 jtw.WriteValue(DateTime.UtcNow.ToString("yyyy-MM-ddThh:mm:ss.fffZ"));
-                jtw.WritePropertyName("a");
+                jtw.WritePropertyName("level");
                 jtw.WriteValue(GetLogLevelString(logLevel));
-                jtw.WritePropertyName("b");
+                jtw.WritePropertyName("cat");
                 jtw.WriteValue(logName);
-                jtw.WritePropertyName("c");
+                jtw.WritePropertyName("eventID");
                 jtw.WriteValue(eventId);
                 if (_isIncludeScope)
                 {
-                    jtw.WritePropertyName("d");
+                    jtw.WritePropertyName("scope");
                     jtw.WriteValue(GetScopeInformation());
                 }
                 if (string.IsNullOrEmpty(message) == false)
                 {
-                    jtw.WritePropertyName("e");
+                    jtw.WritePropertyName("msg");
                     jtw.WriteValue(message);
                 }
                 if (exception != null)
                 {
-                    jtw.WritePropertyName("f");
+                    jtw.WritePropertyName("ex");
                     jtw.WriteValue(exception.ToString());
                 }
                 jtw.WriteEndObject();
