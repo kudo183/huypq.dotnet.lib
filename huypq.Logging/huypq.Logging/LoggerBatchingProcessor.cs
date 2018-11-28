@@ -1,26 +1,12 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace huypq.Logging
 {
     public class LoggerBatchingProcessor : ILoggerProcessor
     {
-        class LogEntry
-        {
-            public DateTime Timestamp { get; set; }
-            public string Message { get; set; }
-        }
-
-        private string _path = "";
-        private string _fileName = "log";
-        private int _maxRetainedFiles = 31;
-        private int _maxFileSize = 200 * 1024 * 1024;
-
         private readonly List<LogEntry> _currentBatch = new List<LogEntry>();
         private readonly int _interval = 1000;
         private readonly int _batchSize = 1024;
@@ -28,17 +14,43 @@ namespace huypq.Logging
         private readonly int _queueSize = 1024;
         private readonly BlockingCollection<LogEntry> _messageQueue;
         private readonly Task _outputTask;
+        private readonly List<ILogBatchWriter> _logWriters = new List<ILogBatchWriter>();
 
-        public LoggerBatchingProcessor(int processInterval, int batchSize, int queueSize, string path, int maxRetainedFiles, int maxFileSize)
+        public LoggerBatchingProcessor(int processInterval, int batchSize, int queueSize, string path, int maxRetainedFiles, int maxFileSize) : this()
         {
-            _path = path;
-            _maxRetainedFiles = maxRetainedFiles;
-            _maxFileSize = maxFileSize;
+            _logWriters.Add(new FileBatchWriter(path, "log_", maxRetainedFiles, maxFileSize));
 
             _interval = processInterval;
             _batchSize = batchSize;
             _queueSize = queueSize;
+        }
 
+        public LoggerBatchingProcessor(ILogBatchWriter logWriter = null) : this()
+        {
+            if (logWriter != null)
+            {
+                _logWriters.Add(logWriter);
+            }
+            else
+            {
+                _logWriters.Add(new ConsoleBatchWriter());
+            }
+        }
+
+        public LoggerBatchingProcessor(List<ILogBatchWriter> logWriter) : this()
+        {
+            if (logWriter != null)
+            {
+                _logWriters.AddRange(logWriter);
+            }
+            else
+            {
+                _logWriters.Add(new ConsoleBatchWriter());
+            }
+        }
+
+        LoggerBatchingProcessor()
+        {
             _messageQueue = new BlockingCollection<LogEntry>(_queueSize);
 
             // Start message queue processor
@@ -61,33 +73,12 @@ namespace huypq.Logging
             }
         }
 
-        System.Net.Sockets.UdpClient client = new System.Net.Sockets.UdpClient();
         private async Task WriteMessage(List<LogEntry> logEntries)
         {
-            Directory.CreateDirectory(_path);
-
-            foreach (var group in logEntries.GroupBy(GetGrouping))
+            foreach (var writer in _logWriters)
             {
-                var fullName = GetFullName(group.Key);
-                var fileInfo = new FileInfo(fullName);
-                if (_maxFileSize > 0 && fileInfo.Exists && fileInfo.Length > _maxFileSize)
-                {
-                    return;
-                }
-
-                using (var streamWriter = File.AppendText(fullName))
-                {
-                    byte[] sendBytes;
-                    foreach (var item in group)
-                    {
-                        await streamWriter.WriteAsync(item.Message);
-                        sendBytes = Encoding.ASCII.GetBytes(item.Message);
-                        await client.SendAsync(sendBytes, sendBytes.Length, "localhost", 11000);
-                    }
-                }
+                await writer.Write(logEntries);
             }
-
-            RollFiles();
         }
 
         private async void ProcessLogQueue()
@@ -131,30 +122,35 @@ namespace huypq.Logging
             catch (TaskCanceledException) { }
             catch (AggregateException ex) when (ex.InnerExceptions.Count == 1 && ex.InnerExceptions[0] is TaskCanceledException) { }
         }
+    }
 
-        private string GetFullName(string group)
+    public class ConsoleBatchWriter : ILogBatchWriter
+    {
+        public async Task Write(List<LogEntry> logEntries)
         {
-            return System.IO.Path.Combine(_path, $"{_fileName}{group}.txt");
-        }
-
-        string GetGrouping(LogEntry message)
-        {
-            return $"{message.Timestamp.Year:0000}{message.Timestamp.Month:00}{message.Timestamp.Day:00}";
-        }
-
-        protected void RollFiles()
-        {
-            if (_maxRetainedFiles > 0)
+            foreach (var msg in logEntries)
             {
-                var files = new DirectoryInfo(_path)
-                    .GetFiles(_fileName + "*")
-                    .OrderByDescending(f => f.Name)
-                    .Skip(_maxRetainedFiles);
+                Console.WriteLine(msg.Message);
+            }
+        }
+    }
 
-                foreach (var item in files)
-                {
-                    item.Delete();
-                }
+    public class UDPBatchWriter : ILogBatchWriter
+    {
+        readonly System.Net.Sockets.UdpClient _udpClient = new System.Net.Sockets.UdpClient();
+        readonly string _host;
+        readonly int _port;
+        public UDPBatchWriter(string host, int port)
+        {
+            _host = host;
+            _port = port;
+        }
+        public async Task Write(List<LogEntry> logEntries)
+        {
+            foreach (var msg in logEntries)
+            {
+                byte[] sendBytes = System.Text.Encoding.ASCII.GetBytes(msg.Message);
+                await _udpClient.SendAsync(sendBytes, sendBytes.Length, _host, _port);
             }
         }
     }
