@@ -12,14 +12,18 @@ namespace huypq.Logging
         readonly string _url;
         readonly string _index;
         readonly int _daysOfLog = 7;
-        HttpClient _httpClient;
+        private static readonly HttpClient HttpClient;
         const string Index = "{\"index\":{}}\n";
+
+        static ElasticsearchBatchWriter()
+        {
+            HttpClient = new HttpClient();
+        }
 
         public ElasticsearchBatchWriter(string url, string index)
         {
             _url = url;
             _index = index;
-            _httpClient = new HttpClient();
         }
 
         public ElasticsearchBatchWriter(string url, string index, int daysOfLog) : this(url, index)
@@ -33,7 +37,7 @@ namespace huypq.Logging
             var currentLastDate = new System.DateTime(now.Year, now.Month, now.Day);
             if (LastDeleteDate < currentLastDate)
             {
-                await _httpClient.DeleteAsync(string.Format("{0}/{1}-{2:yyyy.MM.dd}", _url, _index, currentLastDate));
+                await HttpClient.DeleteAsync(string.Format("{0}/{1}-{2:yyyy.MM.dd}", _url, _index, currentLastDate));
                 LastDeleteDate = currentLastDate;
             }
             StringBuilder sb = new StringBuilder();
@@ -44,7 +48,7 @@ namespace huypq.Logging
             }
             var content = new StringContent(sb.ToString(), Encoding.UTF8, "application/json");
             var url = string.Format("{0}/{1}-{2:yyyy.MM.dd}/_doc/_bulk", _url, _index, System.DateTime.UtcNow);
-            var result = await _httpClient.PostAsync(url, content);
+            var result = await HttpClient.PostAsync(url, content);
         }
     }
 }
