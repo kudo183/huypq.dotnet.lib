@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
@@ -52,11 +53,11 @@ namespace huypq.Logging
 
             if (string.IsNullOrEmpty(message) == false || exception != null)
             {
-                WriteJsonMessage(logLevel, _name, eventId.Id, message, exception);
+                WriteJsonMessage(logLevel, _name, eventId.Id, message, exception, state as IEnumerable<KeyValuePair<string, object>>);
             }
         }
 
-        private void WriteJsonMessage(LogLevel logLevel, string logName, int eventId, string message, Exception exception)
+        private void WriteJsonMessage(LogLevel logLevel, string logName, int eventId, string message, Exception exception, IEnumerable<KeyValuePair<string, object>> state)
         {
             using (var sw = new StringWriter())
             using (var jtw = new JsonTextWriter(sw))
@@ -84,6 +85,17 @@ namespace huypq.Logging
                 {
                     jtw.WritePropertyName("ex");
                     jtw.WriteValue(exception.ToString());
+                }
+                if (state != null)
+                {
+                    foreach (var item in state)
+                    {
+                        if (item.Key == "{OriginalFormat}")
+                            continue;
+
+                        jtw.WritePropertyName(item.Key);
+                        jtw.WriteValue(item.Value);
+                    }
                 }
                 jtw.WriteEndObject();
                 sw.WriteLine();
