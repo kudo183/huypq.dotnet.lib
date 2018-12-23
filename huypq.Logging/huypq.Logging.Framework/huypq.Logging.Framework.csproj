@@ -77,6 +77,8 @@
     <Compile Include="..\huypq.Logging\LogScope.cs">
       <Link>LogScope.cs</Link>
     </Compile>
+    <Compile Include="FormattedLogValues.cs" />
+    <Compile Include="LogValuesFormatter.cs" />
     <Compile Include="Microsoft.Extensions.Logging.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
