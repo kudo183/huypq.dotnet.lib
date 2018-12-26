@@ -92,9 +92,22 @@ namespace huypq.Logging
                     {
                         if (item.Key == "{OriginalFormat}")
                             continue;
-
                         jtw.WritePropertyName(item.Key);
-                        jtw.WriteValue(item.Value);
+                        if (item.Value != null)
+                        {
+                            try
+                            {
+                                jtw.WriteValue(item.Value);
+                            }
+                            catch (Exception)
+                            {
+                                jtw.WriteValue(item.Value.ToString());
+                            }
+                        }
+                        else
+                        {
+                            jtw.WriteNull();
+                        }
                     }
                 }
                 jtw.WriteEndObject();
