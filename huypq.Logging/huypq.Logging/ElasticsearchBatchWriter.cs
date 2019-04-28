@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -7,11 +9,8 @@ namespace huypq.Logging
 {
     public class ElasticsearchBatchWriter : ILogBatchWriter
     {
-        static System.DateTime LastDeleteDate = new System.DateTime();
-
         readonly string _url;
         readonly string _index;
-        readonly int _daysOfLog = 7;
         private static readonly HttpClient HttpClient;
         const string Index = "{\"index\":{}}\n";
 
@@ -26,20 +25,17 @@ namespace huypq.Logging
             _index = index;
         }
 
-        public ElasticsearchBatchWriter(string url, string index, int daysOfLog) : this(url, index)
+        public ElasticsearchBatchWriter(string url, string index, string user, string pass)
         {
-            _daysOfLog = daysOfLog;
+            _url = url;
+            _index = index;
+            HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(
+                "Basic",
+                Convert.ToBase64String(Encoding.ASCII.GetBytes(string.Format("{0}:{1}", user, pass))));
         }
 
         public async Task Write(List<LogEntry> logEntries)
         {
-            var now = System.DateTime.UtcNow.AddDays(-_daysOfLog);
-            var currentLastDate = new System.DateTime(now.Year, now.Month, now.Day);
-            if (LastDeleteDate < currentLastDate)
-            {
-                await HttpClient.DeleteAsync(string.Format("{0}/{1}-{2:yyyy.MM.dd}", _url, _index, currentLastDate));
-                LastDeleteDate = currentLastDate;
-            }
             StringBuilder sb = new StringBuilder();
             foreach (var log in logEntries)
             {
@@ -49,6 +45,27 @@ namespace huypq.Logging
             var content = new StringContent(sb.ToString(), Encoding.UTF8, "application/json");
             var url = string.Format("{0}/{1}-{2:yyyy.MM.dd}/_doc/_bulk", _url, _index, System.DateTime.UtcNow);
             var result = await HttpClient.PostAsync(url, content);
+        }
+
+        public async Task<bool> WriteTest()
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Append(Index);
+            sb.Append("{\"msg\":\"test\"}");
+            sb.Append("\n");
+            var content = new StringContent(sb.ToString(), Encoding.UTF8, "application/json");
+            var now = DateTime.UtcNow;
+            var url = string.Format("{0}/{1}-{2:yyyy.MM.dd}/_doc/_bulk", _url, _index, now);
+            var result = await HttpClient.PostAsync(url, content);
+            var resultString = await result.Content.ReadAsStringAsync();
+            Newtonsoft.Json.Linq.JObject obj = Newtonsoft.Json.Linq.JObject.Parse(resultString);
+
+            if (obj.Value<bool>("errors") == false)
+            {
+                await HttpClient.DeleteAsync(string.Format("{0}/{1}-{2:yyyy.MM.dd}", _url, _index, now));
+                return true;
+            }
+            return false; ;
         }
     }
 }
