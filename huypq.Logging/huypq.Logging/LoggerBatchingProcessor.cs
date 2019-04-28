@@ -77,7 +77,11 @@ namespace huypq.Logging
         {
             foreach (var writer in _logWriters)
             {
-                await writer.Write(logEntries);
+                try
+                {
+                    await writer.Write(logEntries);
+                }
+                catch { }
             }
         }
 
