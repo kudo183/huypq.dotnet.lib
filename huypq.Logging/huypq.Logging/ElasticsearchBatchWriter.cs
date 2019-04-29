@@ -29,9 +29,12 @@ namespace huypq.Logging
         {
             _url = url;
             _index = index;
-            HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(
-                "Basic",
-                Convert.ToBase64String(Encoding.ASCII.GetBytes(string.Format("{0}:{1}", user, pass))));
+            if (string.IsNullOrEmpty(pass) == false)
+            {
+                HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(
+                    "Basic",
+                    Convert.ToBase64String(Encoding.ASCII.GetBytes(string.Format("{0}:{1}", user, pass))));
+            }
         }
 
         public async Task Write(List<LogEntry> logEntries)
