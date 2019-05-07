@@ -121,14 +121,28 @@ namespace huypq.QueryBuilder
 
         public static QueryExpression FromJsonString(string json)
         {
-            var result = Newtonsoft.Json.JsonConvert.DeserializeObject<QueryExpression>(json);
+            var result = Newtonsoft.Json.JsonConvert.DeserializeObject<QueryExpression>(json, new Newtonsoft.Json.JsonSerializerSettings() { TypeNameHandling = Newtonsoft.Json.TypeNameHandling.Auto });
             return result;
         }
 
         public static string ToJsonString(QueryExpression filterExpression)
         {
-            var result = Newtonsoft.Json.JsonConvert.SerializeObject(filterExpression);
+            var result = Newtonsoft.Json.JsonConvert.SerializeObject(filterExpression, new Newtonsoft.Json.JsonSerializerSettings() { TypeNameHandling = Newtonsoft.Json.TypeNameHandling.Auto });
             return result;
+        }
+
+        public static QueryExpression FromProtobufByteArray(byte[] protobuf)
+        {
+            System.IO.MemoryStream ms = new System.IO.MemoryStream(protobuf);
+            var result = ProtoBuf.Serializer.Deserialize<QueryExpression>(ms);
+            return result;
+        }
+
+        public static byte[] ToProtobufByteArray(QueryExpression filterExpression)
+        {
+            System.IO.MemoryStream ms = new System.IO.MemoryStream();
+            ProtoBuf.Serializer.Serialize(ms, filterExpression);
+            return ms.ToArray();
         }
     }
 }

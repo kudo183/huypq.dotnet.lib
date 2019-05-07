@@ -183,6 +183,14 @@ namespace huypq.QueryBuilder
             [ProtoBuf.ProtoMember(3)]
             public T Value { get; set; }
 
+            public WhereOption() { }
+            public WhereOption(string predicate, string path, T value)
+            {
+                Predicate = predicate;
+                PropertyPath = path;
+                Value = value;
+            }
+
             public object GetValue() { return Value; }
 
             public bool Equals(WhereOption<T> other)
@@ -246,28 +254,87 @@ namespace huypq.QueryBuilder
         }
 
         [ProtoBuf.ProtoContract]
-        public class WhereOptionInt : WhereOption<int> { }
+        public class WhereOptionInt : WhereOption<int>
+        {
+            public WhereOptionInt() : base() { }
+            public WhereOptionInt(string predicate, string path, int value) : base(predicate, path, value) { }
+        }
+
         [ProtoBuf.ProtoContract]
-        public class WhereOptionNullableInt : WhereOption<int?> { }
+        public class WhereOptionNullableInt : WhereOption<int?>
+        {
+            public WhereOptionNullableInt() : base() { }
+            public WhereOptionNullableInt(string predicate, string path, int? value) : base(predicate, path, value) { }
+        }
+
         [ProtoBuf.ProtoContract]
-        public class WhereOptionString : WhereOption<string> { }
+        public class WhereOptionString : WhereOption<string>
+        {
+            public WhereOptionString() : base() { }
+            public WhereOptionString(string predicate, string path, string value) : base(predicate, path, value) { }
+        }
+
         [ProtoBuf.ProtoContract]
-        public class WhereOptionBool : WhereOption<bool> { }
+        public class WhereOptionBool : WhereOption<bool>
+        {
+            public WhereOptionBool() : base() { }
+            public WhereOptionBool(string predicate, string path, bool value) : base(predicate, path, value) { }
+        }
+
         [ProtoBuf.ProtoContract]
-        public class WhereOptionNullableBool : WhereOption<bool?> { }
+        public class WhereOptionNullableBool : WhereOption<bool?>
+        {
+            public WhereOptionNullableBool() : base() { }
+            public WhereOptionNullableBool(string predicate, string path, bool? value) : base(predicate, path, value) { }
+        }
+
         [ProtoBuf.ProtoContract]
-        public class WhereOptionDate : WhereOption<DateTime> { }
+        public class WhereOptionDate : WhereOption<DateTime>
+        {
+            public WhereOptionDate() : base() { }
+            public WhereOptionDate(string predicate, string path, DateTime value) : base(predicate, path, value) { }
+        }
+
         [ProtoBuf.ProtoContract]
-        public class WhereOptionNullableDate : WhereOption<DateTime?> { }
+        public class WhereOptionNullableDate : WhereOption<DateTime?>
+        {
+            public WhereOptionNullableDate() : base() { }
+            public WhereOptionNullableDate(string predicate, string path, DateTime value) : base(predicate, path, value) { }
+        }
+
         [ProtoBuf.ProtoContract]
-        public class WhereOptionTime : WhereOption<TimeSpan> { }
+        public class WhereOptionTime : WhereOption<TimeSpan>
+        {
+            public WhereOptionTime() : base() { }
+            public WhereOptionTime(string predicate, string path, TimeSpan value) : base(predicate, path, value) { }
+        }
+
         [ProtoBuf.ProtoContract]
-        public class WhereOptionNullableTime : WhereOption<TimeSpan?> { }
+        public class WhereOptionNullableTime : WhereOption<TimeSpan?>
+        {
+            public WhereOptionNullableTime() : base() { }
+            public WhereOptionNullableTime(string predicate, string path, TimeSpan? value) : base(predicate, path, value) { }
+        }
+
         [ProtoBuf.ProtoContract]
-        public class WhereOptionLong : WhereOption<long> { }
+        public class WhereOptionLong : WhereOption<long>
+        {
+            public WhereOptionLong() : base() { }
+            public WhereOptionLong(string predicate, string path, long value) : base(predicate, path, value) { }
+        }
+
         [ProtoBuf.ProtoContract]
-        public class WhereOptionNullableLong : WhereOption<long?> { }
+        public class WhereOptionNullableLong : WhereOption<long?>
+        {
+            public WhereOptionNullableLong() : base() { }
+            public WhereOptionNullableLong(string predicate, string path, long? value) : base(predicate, path, value) { }
+        }
+
         [ProtoBuf.ProtoContract]
-        public class WhereOptionIntList : WhereOption<List<int>> { }
+        public class WhereOptionIntList : WhereOption<List<int>>
+        {
+            public WhereOptionIntList() : base() { }
+            public WhereOptionIntList(string predicate, string path, List<int> value) : base(predicate, path, value) { }
+        }
     }
 }
