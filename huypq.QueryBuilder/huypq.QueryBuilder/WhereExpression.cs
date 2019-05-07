@@ -152,7 +152,9 @@ namespace huypq.QueryBuilder
         [ProtoBuf.ProtoInclude(18, typeof(WhereOption<TimeSpan?>))]
         [ProtoBuf.ProtoInclude(19, typeof(WhereOption<long>))]
         [ProtoBuf.ProtoInclude(20, typeof(WhereOption<long?>))]
+        [ProtoBuf.ProtoInclude(21, typeof(WhereOption<byte[]>))]
         [ProtoBuf.ProtoInclude(50, typeof(WhereOption<List<int>>))]
+        [ProtoBuf.ProtoInclude(51, typeof(WhereOption<List<string>>))]
         public interface IWhereOption
         {
             string PropertyPath { get; set; }
@@ -173,7 +175,9 @@ namespace huypq.QueryBuilder
         [ProtoBuf.ProtoInclude(18, typeof(WhereOptionNullableTime))]
         [ProtoBuf.ProtoInclude(19, typeof(WhereOptionLong))]
         [ProtoBuf.ProtoInclude(20, typeof(WhereOptionNullableLong))]
+        [ProtoBuf.ProtoInclude(21, typeof(WhereOptionByteArray))]
         [ProtoBuf.ProtoInclude(50, typeof(WhereOptionIntList))]
+        [ProtoBuf.ProtoInclude(51, typeof(WhereOptionStringList))]
         public abstract class WhereOption<T> : IWhereOption, System.IEquatable<WhereOption<T>>
         {
             [ProtoBuf.ProtoMember(1)]
@@ -331,10 +335,24 @@ namespace huypq.QueryBuilder
         }
 
         [ProtoBuf.ProtoContract]
+        public class WhereOptionByteArray : WhereOption<byte[]>
+        {
+            public WhereOptionByteArray() : base() { }
+            public WhereOptionByteArray(string predicate, string path, byte[] value) : base(predicate, path, value) { }
+        }
+
+        [ProtoBuf.ProtoContract]
         public class WhereOptionIntList : WhereOption<List<int>>
         {
             public WhereOptionIntList() : base() { }
-            public WhereOptionIntList(string predicate, string path, List<int> value) : base(predicate, path, value) { }
+            public WhereOptionIntList(string path, List<int> value) : base(In, path, value) { }
+        }
+
+        [ProtoBuf.ProtoContract]
+        public class WhereOptionStringList : WhereOption<List<string>>
+        {
+            public WhereOptionStringList() : base() { }
+            public WhereOptionStringList(string path, List<string> value) : base(In, path, value) { }
         }
     }
 }
