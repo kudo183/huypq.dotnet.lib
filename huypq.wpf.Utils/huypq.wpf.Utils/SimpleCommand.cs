@@ -37,7 +37,10 @@ namespace huypq.wpf.Utils
 
         public void Execute(object parameter)
         {
-            _execute?.Invoke();
+            if (CanExecute(null) == true)
+            {
+                _execute?.Invoke();
+            }
         }
 
         public event EventHandler CanExecuteChanged;
