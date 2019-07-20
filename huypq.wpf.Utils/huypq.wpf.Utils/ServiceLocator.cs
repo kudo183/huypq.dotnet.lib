@@ -15,7 +15,7 @@ namespace huypq.wpf.Utils
 
         private static Dictionary<Type, TargetItem> _typeMapping = new Dictionary<Type, TargetItem>();
 
-        public static void AddTypeMapping(Type key, Type target, bool isSingleton, object constructorOption)
+        private static void CheckTypeMapping(Type key, Type target)
         {
             if (key.IsGenericType)
             {
@@ -41,6 +41,34 @@ namespace huypq.wpf.Utils
                 if (key.IsAssignableFrom(target) == false)
                     throw new ArgumentException("ServiceLocator: key type must assignable from value type");
             }
+        }
+
+        private static TargetItem GetTargetItem(Type key)
+        {
+            TargetItem targetItem;
+            if (_typeMapping.TryGetValue(key, out targetItem) == false)
+            {
+                if (key.IsGenericType)
+                {
+                    var genericTypeDefinition = key.GetGenericTypeDefinition();
+                    if (_typeMapping.TryGetValue(genericTypeDefinition, out targetItem) == false)
+                    {
+                        throw new ArgumentException(string.Format("ServiceLocator: {0} type not found.", genericTypeDefinition));
+                    }
+                    var genericArguments = key.GetGenericArguments();
+                    targetItem.TargetType = targetItem.TargetType.MakeGenericType(genericArguments);
+                }
+                else
+                {
+                    throw new ArgumentException(string.Format("ServiceLocator: {0} type not found.", key));
+                }
+            }
+            return targetItem;
+        }
+
+        public static void AddTypeMapping(Type key, Type target, bool isSingleton, object constructorOption)
+        {
+            CheckTypeMapping(key, target);
 
             _typeMapping.Add(key, new TargetItem()
             {
@@ -50,28 +78,25 @@ namespace huypq.wpf.Utils
             });
         }
 
+        public static void UpdateTypeMapping(Type key, Type target, bool isSingleton, object constructorOption)
+        {
+            CheckTypeMapping(key, target);
+
+            TargetItem targetItem = GetTargetItem(key);
+            targetItem.TargetType = target;
+            targetItem.ConstructorOption = constructorOption;
+            targetItem.IsSingleton = isSingleton;
+            if (targetItem.IsSingleton == true)
+            {
+                targetItem.Instance = null;
+            }
+        }
+
         public static T Get<T>() where T : class
         {
-            Type type = typeof(T);
-            TargetItem targetItem;
-            if (_typeMapping.TryGetValue(type, out targetItem) == false)
-            {
-                if (type.IsGenericType)
-                {
-                    var genericTypeDefinition = type.GetGenericTypeDefinition();
-                    if (_typeMapping.TryGetValue(genericTypeDefinition, out targetItem) == false)
-                    {
-                        throw new ArgumentException(string.Format("ServiceLocator: {0} type not found.", genericTypeDefinition));
-                    }
-                    var genericArguments = type.GetGenericArguments();
-                    targetItem.TargetType = targetItem.TargetType.MakeGenericType(genericArguments);
-                }
-                else
-                {
-                    throw new ArgumentException(string.Format("ServiceLocator: {0} type not found.", type));
-                }
-            }
-            
+            Type key = typeof(T);
+            TargetItem targetItem = GetTargetItem(key);
+
             if (targetItem.IsSingleton == true)
             {
                 if (targetItem.Instance == null)
