@@ -39,6 +39,9 @@ namespace huypq.Logging
 
         public async Task Write(List<LogEntry> logEntries)
         {
+            if (string.IsNullOrEmpty(_url))
+                return;
+
             StringBuilder sb = new StringBuilder();
             foreach (var log in logEntries)
             {
